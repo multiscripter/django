@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/styles.css' %}">
+    <title>Голосование главная</title>
+</head>
+<body class="page-index">
+{% if latest_question_list %}
+    <ul class="quest-list">
+    {% for question in latest_question_list %}
+        <li class="quest-item">
+            <a class="quest-item-ref" href="{% url 'polls:detail' question.id %}">
+                {{ question.question_text }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</body>
+</html>

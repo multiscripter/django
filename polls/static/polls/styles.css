@@ -1,0 +1,12 @@
+a,
+a:visited {
+    color: #fff;
+}
+a:hover,
+a:active {
+    text-decoration: none
+}
+body {
+    background-color: #2e8424;
+    background-image: url("images/bg-pattern.png");
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Front page</title>
+</head>
+<body class="page-index">
+    <h1>Front page</h1>
+    <ul class="app-list">
+        <li class="app-item">
+            <a class="app-ref" href="polls/">Голосовалка</a>
+        </li>
+        <li class="app-item">
+            <a class="app-ref" href="admin/">Админка</a>
+        </li>
+    </ul>
+</body>
+</html>

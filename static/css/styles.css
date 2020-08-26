@@ -1,0 +1,20 @@
+a,
+a:hover,
+a:active,
+a:visited {
+    color: green
+}
+
+a:hover,
+a:active {
+    text-decoration: none
+}
+
+body {
+    cursor: default;
+    font-family: Arial, sans-serif;
+}
+
+.app-item + .app-item {
+    margin-top: 10px;
+}

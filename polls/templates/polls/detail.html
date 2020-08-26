@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Голосование детально</title>
+</head>
+<body class="page-detail">
+    <h1>{{ question.question_text }}</h1>
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+
+    <form class="choice-form" action="{% url 'polls:vote' question.id %}"
+          method="post">
+        {% csrf_token %}
+        {% if question.choice_set.all %}
+        <ul class="choice-list">
+            {% for choice in question.choice_set.all %}
+            <li class="choice-item">
+                <input class="choice-radio" type="radio" name="choice"
+                       id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label class="choice-label" for="choice{{ forloop.counter }}">
+                    {{ choice.choice_text }}
+                </label>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <input class="btn btn-submit" type="submit" value="Vote">
+    </form>
+</body>
+</html>
