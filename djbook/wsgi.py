@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 
 import os, sys
 
-# Эти пути необходимы для работы на бое в режиме wsgi_mod как демона.
+# Эти пути необходимы для работы на бое в режиме mod_wsgi как демона.
+# Решают проблему ModuleNotFoundError: No module named 'имя_модуля'
 sys.path.append('/home/cyberbotx/.local/lib/python3.6/site-packages')
 sys.path.append('/var/www/django.bot.net')
 

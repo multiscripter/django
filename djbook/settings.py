@@ -28,7 +28,7 @@ SECRET_KEY = '*3)q&&z*n@1jp(-!gwl+^=s_a)crl@qax$_z#!&)dz9jxdfa2t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Необходимо для работы на бое в режиме wsgi_mod как демона.
+# Необходимо для работы mod_wsgi.
 ALLOWED_HOSTS = ['django.bot.net']
 
 # Application definition
@@ -124,4 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+
+# При использовании python manage.py runserver
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+
+# При использовании Nginx + Apache2 + mod_wsgi.
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
