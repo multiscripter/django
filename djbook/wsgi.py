@@ -7,10 +7,14 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
 
-import os
+import os, sys
 
-from django.core.wsgi import get_wsgi_application
+# Эти пути необходимы для работы на бое в режиме wsgi_mod как демона.
+sys.path.append('/home/cyberbotx/.local/lib/python3.6/site-packages')
+sys.path.append('/var/www/django.bot.net')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djbook.settings')
+
+from django.core.wsgi import get_wsgi_application
 
 application = get_wsgi_application()

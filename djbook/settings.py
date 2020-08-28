@@ -28,7 +28,8 @@ SECRET_KEY = '*3)q&&z*n@1jp(-!gwl+^=s_a)crl@qax$_z#!&)dz9jxdfa2t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Необходимо для работы на бое в режиме wsgi_mod как демона.
+ALLOWED_HOSTS = ['django.bot.net']
 
 # Application definition
 
