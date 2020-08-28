@@ -19,10 +19,12 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from djbook import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
     # Site index page.
     path('', views.home, name='home'),
-    #url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
