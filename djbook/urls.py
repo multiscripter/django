@@ -27,4 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Site index page.
     path('', views.home, name='home'),
+    # Инструкция на случай если favicon.ico не прописан в тэге head страницы
+    # и не настроена отдача favicon.ico в Nginx.
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico'), name='favicon'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
