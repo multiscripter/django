@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-    <title>Front page</title>
+    <title>Главная страница</title>
 </head>
-<body class="page-index">
-    <h1>Front page</h1>
-    <ul class="app-list">
-        <li class="app-item">
-            <a class="app-ref" href="polls/">Голосовалка</a>
-        </li>
-        <li class="app-item">
-            <a class="app-ref" href="admin/">Админка</a>
-        </li>
-    </ul>
+<body class="container page-index">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Сайт на Джанге</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-7 col-lg-8">
+            <ul class="list-group mb-3 app-list">
+                <li class="list-group-item app-item">
+                    <a class="app-ref" href="polls/">Голосовалка</a>
+                </li>
+                <li class="list-group-item app-item">
+                    <a class="app-ref" href="admin/">Админка</a>
+                </li>
+            </ul> 
+            <div class="video-box mb-3 img-thumbnail">
+                <div class="video">
+                    <iframe src="https://www.youtube.com/embed/Q0mOYpFhp-Y" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-4">
+            <div class="img-box d-flex justify-content-center">
+                <img class="img-thumbnail float-right" src="/static/images/django-poster-vert.jpg">
+            </div>
+        </div>
+    </div>
 </body>
 </html>

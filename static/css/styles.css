@@ -5,16 +5,24 @@ a:visited {
     color: green
 }
 
-a:hover,
-a:active {
-    text-decoration: none
-}
-
 body {
     cursor: default;
-    font-family: Arial, sans-serif;
+    min-width: 320px;
 }
 
-.app-item + .app-item {
-    margin-top: 10px;
+.videos .content .item .head {
+	height: 28px
+}
+
+.video {
+	position: relative;
+	padding-bottom: 56.25%;
+}
+
+.video iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%
 }
