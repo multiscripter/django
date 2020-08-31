@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['django.bot.net']
 # Application definition
 
 INSTALLED_APPS = [
+    'djbook.apps.DjbookConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
