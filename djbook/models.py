@@ -12,28 +12,25 @@ class Taxonomy(models.Model):
     rus_word = models.CharField(max_length=32, verbose_name='Рус')
 
     # Родительская таксономия.
-    parent = models.OneToOneField(
-        'Taxonomy',
+    parent = models.ForeignKey(
+        'self',
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name='ancestor',
         verbose_name='Предок'
     )
-    # Дочерние таксономии. One-To-Many.
-    kids = models.ForeignKey(
-        'Taxonomy',
-        models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name='descendants',
-        verbose_name='Потомки'
-    )
 
-    def get_parent(self):
-        return self.ancestor.rus_word
+    def get_kids_rus(self):
+        kids = Taxonomy.objects.filter(parent_id=self.id)
+        return ', '.join(kid.rus_word for kid in kids)
+    get_kids_rus.short_description = 'Потомки'
 
+    def get_parent_rus(self):
+        return Taxonomy.objects.get(id=self.parent_id).rus_word
+        #return self.ancestor.rus_word
     # Имя столбца в списке объектов в админке.
-    get_parent.short_description = 'Предок'
+    get_parent_rus.short_description = 'Предок'
 
     # Возвращает строковое представление объекта.
     def __str__(self):

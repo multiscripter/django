@@ -8,7 +8,7 @@ from .models import Eng
 
 
 class TaxList(admin.ModelAdmin):
-    list_display = ('id', 'rus_word', 'get_parent')
+    list_display = ('id', 'rus_word', 'get_parent_rus', 'get_kids_rus')
 
 
 class PartList(admin.ModelAdmin):
