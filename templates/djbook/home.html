@@ -42,34 +42,16 @@
     </div>
     <div class="row">
         <div class="col-12">
-            {% if tax_most_list %}
-            <ul class="tax-list">
-                {% for tax in tax_most_list %}
-                <li class="tax-item">
-                    <b>{{ tax.eng_word }}</b> &ndash;&nbsp;{{ tax.rus_word }}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Таксономий нет.</p>
-            {% endif %}
-            <hr>
-            {% if tree_html %}
+            {% if tax_most_tree_html %}
             {% autoescape off %}
-            {{ tree_html }}
+            {{ tax_most_tree_html }}
             {% endautoescape %}
             {% endif %}
             <hr>
-            {% if tax_theme_list %}
-            <ul class="tax-list">
-                {% for tax in tax_theme_list %}
-                <li class="tax-item">
-                    <b>{{ tax.eng_word }}</b> &ndash;&nbsp;{{ tax.rus_word }}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Таксономий нет.</p>
+            {% if tax_theme_tree_html %}
+            {% autoescape off %}
+            {{ tax_theme_tree_html }}
+            {% endautoescape %}
             {% endif %}
         </div>
     </div>

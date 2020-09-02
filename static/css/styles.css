@@ -26,3 +26,7 @@ body {
 	width: 100%;
 	height: 100%
 }
+
+.list-group-compact li {
+    padding: 0.25rem 0.75rem;
+}
