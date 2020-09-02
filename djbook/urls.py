@@ -23,9 +23,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Голосовалка.
     path('polls/', include('polls.urls')),
+    # Админка.
     path('admin/', admin.site.urls),
-    # Site index page.
+    # Страница категории. ex: /theme/animals/
+    path('theme/<slug:slug>/', views.theme, name='theme'),
+    # Главная страница сайта.
     path('', views.home, name='home'),
     # Инструкция на случай если favicon.ico не прописан в тэге head страницы
     # и не настроена отдача favicon.ico в Nginx.

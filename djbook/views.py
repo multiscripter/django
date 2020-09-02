@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from .models import Eng
+from .models import Part
 from .models import Taxonomy
 
 
@@ -39,8 +41,9 @@ def build_html_by_tree(tree):
         html += '<ul class="list-group list-group-compact">\n'
         for kid in tree.kids:
             html += '   <li class="list-group-item list-group-item-action">'
-            elem = '<div><b>' + kid.obj.eng_word + '</b> &ndash;&nbsp;'
-            elem += kid.obj.rus_word + '</div>\n'
+            elem = f'<a class="ref" href="theme/{kid.obj.slug}/">'
+            elem += '<b>' + kid.obj.eng_word + '</b> &ndash;&nbsp;'
+            elem += kid.obj.rus_word + '</a>\n'
             if kid.kids:
                 elem += build_html_by_tree(kid)
             html += elem
@@ -52,6 +55,14 @@ def build_html_by_tree(tree):
 def home(request):
     # Получить все записи с полем parent = null
     # tax_list = Taxonomy.objects.filter(parent__isnull=True)
+
+    # Получить все части речи.
+    parts = Part.objects.all()
+    if parts:
+        for part in parts:
+            part.count = Eng.objects.filter(part_id=part.id).count()
+    # Получить все англ. существительные.
+    # nouns = Eng.objects.filter(part=1).order_by('word')
 
     tree = build_tree(15)
     elem = '<h6 class="mt-3 list-group-head">'
@@ -70,7 +81,24 @@ def home(request):
         tax_theme_tree_html += build_html_by_tree(tree)
 
     data = {
+        'parts': parts,
+        #'nouns': nouns,
         'tax_most_tree_html': tax_most_tree_html,
         'tax_theme_tree_html': tax_theme_tree_html
     }
     return render(request, 'djbook/home.html', data)
+
+
+def theme(request, slug):
+    tax = Taxonomy.objects.get(slug=slug)
+    words = Eng.objects.filter(taxonomies=tax).order_by('word')
+    if words:
+        for word in words:
+            word.trans = '<br>'.join(rus.word for rus in word.translations.all())
+
+    data = {
+        'count': len(words),
+        'tax': tax,
+        'words': words
+    }
+    return render(request, 'djbook/theme.html', data)

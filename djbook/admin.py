@@ -7,8 +7,9 @@ from .models import Rus
 from .models import Eng
 
 
-class TaxList(admin.ModelAdmin):
-    list_display = ('id', 'rus_word', 'get_parent_rus', 'get_kids_rus')
+class TaxonomyAdmin(admin.ModelAdmin):
+    list_display = ('id', 'rus_word', 'slug', 'get_parent_rus', 'get_kids_rus')
+    prepopulated_fields = {"slug": ("eng_word",)}
 
 
 class PartList(admin.ModelAdmin):
@@ -23,7 +24,7 @@ class EngList(admin.ModelAdmin):
     list_display = ('id', 'word')
 
 
-admin.site.register(Taxonomy, TaxList)
+admin.site.register(Taxonomy, TaxonomyAdmin)
 admin.site.register(Part, PartList)
 admin.site.register(Rus, RusList)
 admin.site.register(Eng, EngList)

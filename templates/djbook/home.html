@@ -53,6 +53,25 @@
             {{ tax_theme_tree_html }}
             {% endautoescape %}
             {% endif %}
+
+            {% if parts %}
+            <table class="table width_auto table-sm mt-4 words-counts">
+                <thead>
+                    <tr>
+                        <th>Часть речи</th>
+                        <th>Слов</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for part in parts %}
+                    <tr>
+                        <td>{{ part.rus_word }}</td>
+                        <td>{{ part.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
         </div>
     </div>
 </body>

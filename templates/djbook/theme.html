@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>{{ tax.rus_word }}</title>
+</head>
+<body class="container page-cat">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">{{ tax.rus_word }}</h1>
+            {% if words %}
+            <div>слов:&nbsp;{{ count }}</div>
+            <ul class="word-list">
+            {% for word in words %}
+                <li class="word-item">
+                    <span class="word-item-col word-item-word">
+                        {{ word.word }}
+                    </span>
+                    &ndash;&nbsp;
+                    <span class="word-item-col word-item-trans">
+                        {% autoescape off %}
+                        {{ word.trans }}
+                        {% endautoescape %}
+                    </span>
+                </li>
+            {% endfor %}
+            </ul>
+            {% else %}
+            <p>Категория пуста.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

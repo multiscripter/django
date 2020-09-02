@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class Taxonomy(models.Model):
@@ -10,8 +11,15 @@ class Taxonomy(models.Model):
     eng_word = models.CharField(max_length=32, verbose_name='Англ')
     # Название по-русски.
     rus_word = models.CharField(max_length=32, verbose_name='Рус')
+    # Название для URI-ссылки.
+    slug = models.SlugField(
+        max_length=32,
+        unique=True,
+        verbose_name='Слаг'
+    )
 
-    # Родительская таксономия.
+    # Родительская таксономия. Связь "Many-to-One".
+    # Много подкатегорий могут пренадлежать одной родительской категории.
     parent = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -20,6 +28,13 @@ class Taxonomy(models.Model):
         related_name='ancestor',
         verbose_name='Предок'
     )
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.slug = self.slug.strip()
+        if not self.slug:
+            self.slug = slugify(self.eng_word)
+        super(Taxonomy, self).save(force_insert, force_update, using, update_fields)
 
     def get_kids_rus(self):
         kids = Taxonomy.objects.filter(parent_id=self.id)
@@ -72,7 +87,11 @@ class Rus(models.Model):
     # Идентификатор.
     id = models.SmallAutoField(primary_key=True, verbose_name='ИД')
     # Слово.
-    word = models.CharField(max_length=32, verbose_name='Слово')
+    word = models.CharField(
+        max_length=32,
+        unique=True,
+        verbose_name='Слово'
+    )
 
     # Возвращает строковое представление объекта.
     def __str__(self):
@@ -91,10 +110,20 @@ class Eng(models.Model):
     id = models.SmallAutoField(primary_key=True, verbose_name='ИД')
     # Слово.
     word = models.CharField(max_length=32, verbose_name='Слово')
-
-    parts = models.ManyToManyField(Part)
-    taxonomies = models.ManyToManyField(Taxonomy)
-    translations = models.ManyToManyField(Rus)
+    # Часть речи. Связь "Many-to-One".
+    # Много слов могут пренадлежать одной части речи.
+    part = models.ForeignKey(
+        Part,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='part',
+        verbose_name='Часть речи'
+    )
+    # Категории.
+    taxonomies = models.ManyToManyField(Taxonomy, related_name='eng')
+    # Переводы.
+    translations = models.ManyToManyField(Rus, related_name='eng')
 
     # Возвращает строковое представление объекта.
     def __str__(self):

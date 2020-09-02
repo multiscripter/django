@@ -2,16 +2,17 @@ a,
 a:hover,
 a:active,
 a:visited {
-    color: green
+    color: green;
 }
 
 body {
     cursor: default;
+    font-size: 18px;
     min-width: 320px;
 }
 
 .videos .content .item .head {
-	height: 28px
+	height: 28px;
 }
 
 .video {
@@ -29,4 +30,49 @@ body {
 
 .list-group-compact li {
     padding: 0.25rem 0.75rem;
+}
+
+.width_auto {
+    width: auto;
+}
+
+.words-counts td:nth-child(even) {
+    text-align: right;
+}
+
+.word-list {
+    list-style: none;
+    padding: 0;
+}
+
+.word-item-col {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.word-item:nth-child(5n+1) {
+    margin-top: 10px;
+}
+
+.word-item-word {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+@media (min-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1280px) {
+    body {
+        font-size: 14px;
+    }
 }
