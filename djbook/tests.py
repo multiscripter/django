@@ -33,5 +33,5 @@ class ViewsTest(TestCase):
         """Tests String build_html_by_tree(tree)"""
         tree = build_tree(1)
         tree_html = build_html_by_tree(tree)
-        print(tree_html)
+        # print(tree_html)
         self.assertTrue(tree_html)
