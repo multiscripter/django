@@ -131,3 +131,45 @@ STATIC_URL = '/static/'
 
 # При использовании Nginx + Apache2 + mod_wsgi.
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+# https://docs.python.org/3.6/library/logging.html
+# https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(filename)s %(message)s'
+        },
+        'message': {
+            'format': '%(message)s'
+        }
+    },
+    'handlers': {
+        'file-common': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            # Установить владельца и права на лог-файл.
+            'filename': '/var/log/django/django.bot.net-common.log',
+            'formatter': 'verbose'
+        },
+        'file-db': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            # Установить владельца и права на лог-файл.
+            'filename': '/var/log/django/django.bot.net-db.log',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file-common'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['file-db'],
+            'level': 'DEBUG',
+            'propagate': False
+        }
+    },
+}
