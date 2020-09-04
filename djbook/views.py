@@ -97,7 +97,7 @@ def theme(request, slug):
             word.trans = '<br>'.join(rus.word for rus in word.translations.all())
 
     data = {
-        'count': len(words),
+        'count': words.count(),
         'tax': tax,
         'words': words
     }
