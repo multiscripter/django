@@ -152,14 +152,16 @@ LOGGING = {
     'handlers': {
         'file-common': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR + 'django.bot.net-common.log',
+            'maxBytes': 1024*1024,
             'formatter': 'verbose'
         },
         'file-db': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOG_DIR + 'django.bot.net-db.log',
+            'maxBytes': 1024*1024,
             'formatter': 'message'
         }
     },
