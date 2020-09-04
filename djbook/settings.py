@@ -131,9 +131,13 @@ STATIC_URL = '/static/'
 
 # При использовании Nginx + Apache2 + mod_wsgi.
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+LOG_DIR = os.path.join(BASE_DIR, 'log/')
 
 # https://docs.python.org/3.6/library/logging.html
 # https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration
+# Установить владельца (www-data) на папку логов.
+# Установить права на папку логов (750).
+# Установить права на фвйлы логов (664).
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -142,29 +146,28 @@ LOGGING = {
             'format': '%(asctime)s %(levelname)s %(module)s %(filename)s %(message)s'
         },
         'message': {
-            'format': '%(message)s'
+            'format': '%(asctime)s %(message)s'
         }
     },
     'handlers': {
         'file-common': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            # Установить владельца и права на лог-файл.
-            'filename': '/var/log/django/django.bot.net-common.log',
+            'filename': LOG_DIR + 'django.bot.net-common.log',
             'formatter': 'verbose'
         },
         'file-db': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            # Установить владельца и права на лог-файл.
-            'filename': '/var/log/django/django.bot.net-db.log',
+            'filename': LOG_DIR + 'django.bot.net-db.log',
+            'formatter': 'message'
         }
     },
     'loggers': {
         'django': {
             'handlers': ['file-common'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['file-db'],
