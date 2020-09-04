@@ -65,12 +65,14 @@
                 <tbody>
                     {% for part in parts %}
                     <tr>
-                        <td>{{ part.rus_word }}</td>
-                        <td>{{ part.count }}</td>
+                        <td>{{ part.name }}</td>
+                        <td>{{ part.qty }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <p>Список частей речи пуст.</p>
             {% endif %}
         </div>
     </div>

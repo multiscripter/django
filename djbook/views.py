@@ -1,7 +1,9 @@
+from django.db import connection
 from django.shortcuts import render
-from .models import Eng
-from .models import Part
+import logging
 from .models import Taxonomy
+
+logger = logging.getLogger(__name__)
 
 
 class Node:
@@ -12,26 +14,31 @@ class Node:
         self.kids = []
 
 
-def get_kids(node):
+def get_kids(tax_set, node):
     nodes = []
-    kids = Taxonomy.objects.filter(parent_id=node.id).order_by('eng_word')
-    if kids:
-        for kid in kids:
-            child = Node(kid, node)
+    # kids = Taxonomy.objects.filter(parent_id=node.id).order_by('eng_word')
+    for tax in tax_set:
+        if tax.parent_id == node.id:
+            child = Node(tax, node)
             node.kids.append(child)
             nodes.append(child)
     return nodes
 
 
-def build_tree(tax_id):
+def build_tree(tax_set, tax_id):
     tree = None
-    root = Taxonomy.objects.get(id=tax_id)
+    root = None
+    for tax in tax_set:
+        if tax.id == tax_id:
+            root = tax
+            break
+
     if root:
         tree = Node(root, None)
         nodes = [tree]
         while nodes:
             node = nodes.pop(0)
-            nodes.extend(get_kids(node))
+            nodes.extend(get_kids(tax_set, node))
     return tree
 
 
@@ -56,15 +63,31 @@ def home(request):
     # Получить все записи с полем parent = null
     # tax_list = Taxonomy.objects.filter(parent__isnull=True)
 
-    # Получить все части речи.
-    parts = Part.objects.all()
-    if parts:
-        for part in parts:
-            part.count = Eng.objects.filter(part_id=part.id).count()
+    cursor = None
+    parts = []
+    try:
+        cursor = connection.cursor()
+        query = 'select parts.rus_word as name, count(engs.id) as qty'
+        query += ' from engvoc_part parts left join engvoc_eng engs'
+        query += ' on parts.id = engs.part_id'
+        query += ' group by name, parts.id'
+        query += ' order by parts.id'
+        cursor.execute(query)
+        result = cursor.fetchall()
+        if result:
+            for row in result:
+                parts.append({'name': row[0], 'qty': row[1]})
+    except Exception as ex:
+        logger.error(ex)
+    finally:
+        if cursor:
+            cursor.close()
+
     # Получить все англ. существительные.
     # nouns = Eng.objects.filter(part=1).order_by('word')
 
-    tree = build_tree(15)
+    tax_set = Taxonomy.objects.all().order_by('eng_word')
+    tree = build_tree(tax_set, 15)
     elem = '<h6 class="mt-3 list-group-head">'
     elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
     elem += tree.obj.rus_word + '</h6>\n'
@@ -72,7 +95,7 @@ def home(request):
     if tree:
         tax_most_tree_html += build_html_by_tree(tree)
 
-    tree = build_tree(17)
+    tree = build_tree(tax_set, 17)
     elem = '<h6 class="mt-3 list-group-head">'
     elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
     elem += tree.obj.rus_word + '</h6>\n'
@@ -82,7 +105,6 @@ def home(request):
 
     data = {
         'parts': parts,
-        #'nouns': nouns,
         'tax_most_tree_html': tax_most_tree_html,
         'tax_theme_tree_html': tax_theme_tree_html
     }
@@ -91,13 +113,40 @@ def home(request):
 
 def theme(request, slug):
     tax = Taxonomy.objects.get(slug=slug)
-    words = Eng.objects.filter(taxonomies=tax).order_by('word')
-    if words:
-        for word in words:
-            word.trans = '<br>'.join(rus.word for rus in word.translations.all())
+    words = {}
+    # PostgreSQL имеет функцию ArrayAgg(). В поле trans - кортеж.
+    # words = Eng.objects.filter(taxonomies__slug=slug).annotate(trans=ArrayAgg('translations__word')).order_by('word')
+    cursor = None
+    try:
+        cursor = connection.cursor()
+        query = 'select engs.word eng, russ.word rus'
+        query += ''' from engvoc_eng engs, 
+        engvoc_eng_translations engs_russ, 
+        engvoc_rus russ, 
+        engvoc_tax tax,
+        engvoc_eng_taxonomies engs_taxs'''
+        query += ' where engs.id = engs_russ.eng_id'
+        query += ' and engs_russ.rus_id = russ.id'
+        query += ' and engs.id = engs_taxs.eng_id'
+        query += ' and engs_taxs.taxonomy_id = tax.id'
+        query += ' and tax.slug = %s'
+        query += ' order by eng, rus'
+        cursor.execute(query, [slug])
+        result = cursor.fetchall()
+        if result:
+            for row in result:
+                if row[0] in words:
+                    words[row[0]] += ', ' + row[1]
+                else:
+                    words[row[0]] = row[1]
+    except Exception as ex:
+        logger.error(ex)
+    finally:
+        if cursor:
+            cursor.close()
 
     data = {
-        'count': words.count(),
+        'count': len(words),
         'tax': tax,
         'words': words
     }

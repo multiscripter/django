@@ -16,16 +16,14 @@
             {% if words %}
             <div>слов:&nbsp;{{ count }}</div>
             <ul class="word-list">
-            {% for word in words %}
+            {% for key, val in words.items %}
                 <li class="word-item">
                     <span class="word-item-col word-item-word">
-                        {{ word.word }}
+                        {{ key }}
                     </span>
                     &ndash;&nbsp;
                     <span class="word-item-col word-item-trans">
-                        {% autoescape off %}
-                        {{ word.trans }}
-                        {% endautoescape %}
+                        {{ val }}
                     </span>
                 </li>
             {% endfor %}
