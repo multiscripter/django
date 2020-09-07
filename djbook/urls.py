@@ -35,3 +35,8 @@ urlpatterns = [
     # и не настроена отдача favicon.ico в Nginx.
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico'), name='favicon'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler400 = 'djbook.views.http400'
+handler403 = 'djbook.views.http403'
+handler404 = 'djbook.views.http404'
+handler500 = 'djbook.views.http500'

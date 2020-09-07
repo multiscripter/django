@@ -151,3 +151,35 @@ def theme(request, slug):
         'words': words
     }
     return render(request, 'djbook/theme.html', data)
+
+
+def http400(request, exception):
+    data = {
+        'code': 400,
+        'text': 'Плохой запрос'
+    }
+    return render(request, 'djbook/http-error.html', data, status=400)
+
+
+def http403(request, exception):
+    data = {
+        'code': 403,
+        'text': 'Доступ запрещён'
+    }
+    return render(request, 'djbook/http-error.html', data,  status=403)
+
+
+def http404(request, exception):
+    data = {
+        'code': 404,
+        'text': 'Страница не&nbsp;найдена'
+    }
+    return render(request, 'djbook/http-error.html', data,  status=404)
+
+
+def http500(request):
+    data = {
+        'code': 500,
+        'text': 'Ошибка сервера'
+    }
+    return render(request, 'djbook/http-error.html', data, status=500)
