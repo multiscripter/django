@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Страница тстирования</title>
+</head>
+<body class="container page-test">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <b>call:</b> {{ eng_count.call }}<br />
+            <b>query:</b> {{ eng_count.query }}<br />
+            <b>result:</b> {{ eng_count.result }}
+        </div>
+        <div class="col-12 mb-4">
+            {% autoescape off %}
+            <b>call:</b> {{ eng_f_count.call }}<br />
+            <b>query:</b> {{ eng_f_count.query }}<br />
+            <b>result:</b> {{ eng_f_count.result }}
+            {% endautoescape %}
+        </div>
+        <div class="col-12 mb-4">
+            {% autoescape off %}
+            <b>call:</b> {{ eng_avg_id.call }}<br />
+            <b>query:</b> {{ eng_avg_id.query }}<br />
+            <b>result:</b> {{ eng_avg_id.result.foo }}
+            {% endautoescape %}
+        </div>
+        <div class="col-12 mb-4">
+            {% autoescape off %}
+            <b>call:</b> {{ tax_count.call }}<br />
+            <b>query:</b> {{ tax_count.query }}<br />
+            <b>result:</b>
+            {% if tax_count.result %}
+            <table>
+                {% for tax in tax_count.result %}
+                <tr>
+                    <td>{{ tax.rus_word }}</td>
+                    <td>{{ tax.foo }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>Список таксономий пуст.</p>
+            {% endif %}
+            {% endautoescape %}
+        </div>
+    </div>
+</body>
+</html>

@@ -23,6 +23,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Тестовая страница.
+    path('test/', views.test, name='test'),
     # Голосовалка.
     path('polls/', include('polls.urls')),
     # Админка.

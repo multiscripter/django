@@ -1,9 +1,52 @@
 from django.db import connection
+from django.db.models import Avg, Count
 from django.shortcuts import render
 import logging
+from .models import Eng
 from .models import Taxonomy
 
 logger = logging.getLogger(__name__)
+
+
+def test(request):
+    eng_count = Eng.objects.count()
+    eng_f_count = Eng.objects.filter(taxonomies__eng_word='birds').count()
+    eng_avg_id = Eng.objects.aggregate(foo= Avg('id'))
+    tax_count = Taxonomy.objects.annotate(foo=Count('eng'))
+    data = {
+        'eng_count': {
+            'call': 'Eng.objects.count()',
+            'query': 'SELECT COUNT(*) AS "__count" FROM "engvoc_eng"',
+            'result': eng_count
+        },
+        'eng_f_count': {
+            'call': "Eng.objects.filter(taxonomies__eng_word='birds').count()",
+            'query': '''SELECT COUNT(*) AS "__count"<br /> 
+                        FROM "engvoc_eng"<br />
+                        INNER JOIN "engvoc_eng_taxonomies"<br />
+                        ON ("engvoc_eng"."id" = "engvoc_eng_taxonomies"."eng_id")<br /> 
+                        INNER JOIN "engvoc_tax"<br />
+                        ON ("engvoc_eng_taxonomies"."taxonomy_id" = "engvoc_tax"."id")<br /> 
+                        WHERE "engvoc_tax"."eng_word" = 'birds';''',
+            'result': eng_f_count
+        },
+        'eng_avg_id': {
+            'call': '''Eng.objects.aggregate(Avg('id'))''',
+            'query': '''SELECT AVG("engvoc_eng"."id") AS "id__avg" FROM "engvoc_eng";''',
+            'result': eng_avg_id
+        },
+        'tax_count': {
+            'call': '''Taxonomy.objects.annotate(foo=Count('eng'))''',
+            'query': '''SELECT "engvoc_tax"."id", "engvoc_tax"."eng_word",<br /> 
+            "engvoc_tax"."rus_word", "engvoc_tax"."slug", "engvoc_tax"."parent_id",<br />
+            COUNT("engvoc_eng_taxonomies"."eng_id") AS "foo"<br />
+            FROM "engvoc_tax" LEFT OUTER JOIN "engvoc_eng_taxonomies"<br />
+            ON ("engvoc_tax"."id" = "engvoc_eng_taxonomies"."taxonomy_id")<br />
+            GROUP BY "engvoc_tax"."id"''',
+            'result': tax_count
+        }
+    }
+    return render(request, 'djbook/test.html', data)
 
 
 class Node:
