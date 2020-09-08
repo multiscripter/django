@@ -49,8 +49,8 @@ class Taxonomy(models.Model):
 
     # Возвращает строковое представление объекта.
     def __str__(self):
-        return 'Taxonomy{{id:{0}, eng:{1}, rus:{2}}}'.format(
-            self.id, self.eng_word, self.rus_word
+        return 'Taxonomy{{id:{0}, eng:{1}, rus:{2}, parent_id:{3}}}'.format(
+            self.id, self.eng_word, self.rus_word, self.parent_id
         )
 
     class Meta:

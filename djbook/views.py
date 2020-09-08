@@ -8,7 +8,7 @@ from .models import Taxonomy
 logger = logging.getLogger(__name__)
 
 
-def test(request):
+def aggregation(request):
     eng_count = Eng.objects.count()
     eng_f_count = Eng.objects.filter(taxonomies__eng_word='birds').count()
     eng_avg_id = Eng.objects.aggregate(foo= Avg('id'))
@@ -46,7 +46,7 @@ def test(request):
             'result': tax_count
         }
     }
-    return render(request, 'djbook/test.html', data)
+    return render(request, 'djbook/aggregation.html', data)
 
 
 class Node:
