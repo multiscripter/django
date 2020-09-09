@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Формы. Ответ.</title>
+</head>
+<body class="container page-forms-response">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Статус: {{ status }}</h1>
+            {% if error %}
+            <h2>Ошибка: {{ error }}</h2>
+            {% endif %}
+            {% if message %}
+            <h3>Сообщение: {{ message }}</h3>
+            {% endif %}
+            <a class="btn btn-info" href="/forms/">Назад</a>
+        </div>
+    </div>
+</body>
+</html>

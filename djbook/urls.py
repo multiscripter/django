@@ -23,6 +23,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Страница с формами.
+    path('forms-response/', views.forms, name='forms'),
+    path('forms/', views.forms, name='forms'),
     # Тестирование методов агрегации моделей.
     path('aggregation/', views.aggregation, name='aggregation'),
     # Голосовалка.

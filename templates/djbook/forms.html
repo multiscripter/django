@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Формы</title>
+</head>
+<body class="container page-forms">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Форма 2</h2>
+            <form action="/forms/" method="post">
+                <input type="hidden" name="form-id" value="form-2">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
+                <div class="form-group">
+                    {{ form.text.errors }}
+                    <label class="form-label" for="form-2-text">
+                        Ваше имя:
+                    </label>
+                    <input id="form-2-text"
+                           name="text"
+                           class="form-control text-field"
+                           type="text"
+                           value="{% if form.text.value %}{{ form.text.value }}{% endif %}">
+                    <p class="form-item-help">{{ form.text.help_text|safe }}</p>
+                </div>
+                <div class="btn-box">
+                    <input type="submit" class="btn btn-primary" value="Отправить">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Форма 3</h2>
+            <form action="/forms/" method="post">
+                <input type="hidden" name="form-id" value="form-3">
+                {{ form }}
+                <div class="btn-box">
+                    <input type="submit" class="btn btn-primary" value="Отправить">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

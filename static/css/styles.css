@@ -59,6 +59,10 @@ body {
     margin-right: 5px;
 }
 
+a.btn {
+    color: #fff;
+}
+
 @media (min-width: 768px) {
     body {
         font-size: 16px;
