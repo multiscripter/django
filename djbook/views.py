@@ -126,7 +126,7 @@ def build_tree(tax_set, tax_id):
 
 def build_html_by_tree(tree):
     html = ''
-    if tree.kids:
+    if tree and tree.kids:
         html += '<ul class="list-group list-group-compact">\n'
         for kid in tree.kids:
             html += '   <li class="list-group-item list-group-item-action">'

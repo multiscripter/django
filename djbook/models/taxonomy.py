@@ -37,7 +37,7 @@ class Taxonomy(models.Model):
         super(Taxonomy, self).save(force_insert, force_update, using, update_fields)
 
     def get_kids_rus(self):
-        kids = Taxonomy.objects.filter(parent_id=self.id)
+        kids = Taxonomy.objects.filter(parent_id=self.id).order_by('rus_word')
         return ', '.join(kid.rus_word for kid in kids)
     get_kids_rus.short_description = 'Потомки'
 

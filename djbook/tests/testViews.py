@@ -14,6 +14,8 @@ from unittest import skip
 from djbook.models import Taxonomy
 
 
+# https://docs.djangoproject.com/en/3.1/topics/testing/advanced/#using-different-testing-frameworks
+
 # Покрытие кода.
 # https://devguide.python.org/coverage/
 
@@ -27,14 +29,14 @@ from djbook.models import Taxonomy
 # Собрать информацию в html-файлы.
 # coverage html
 
-# Запуск из консоли из корня сайта: python manage.py test djbook.tests.ViewsTest
-class ViewsTest(TestCase):
+# Запуск из консоли из корня сайта: python manage.py test djbook.tests.TestViews
+class TestViews(TestCase):
     @classmethod
     def setUpClass(cls):
         """Действия перед всеми тестами.
         При переопределении setUpClass(cls) всегда нужно вызывать
         метод super(%имя_текущего_класса_тестов%, cls).setUpClass()"""
-        super(ViewsTest, cls).setUpClass()
+        super(TestViews, cls).setUpClass()
 
     def setUp(self):
         data = [
@@ -70,7 +72,7 @@ class ViewsTest(TestCase):
         tree_html = build_html_by_tree(tree)
         self.assertTrue(tree_html)
 
-    # python manage.py test djbook.tests.ViewsTest.test_get_kids_throws_exception
+    # python manage.py test djbook.tests.TestViews.test_get_kids_throws_exception
     # https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertRaises
     def test_get_kids_throws_exception(self):
         """Тестирует Node[] get_kids(tax_set, node)"""
@@ -81,4 +83,4 @@ class ViewsTest(TestCase):
         """Действия после всех тестов.
         При переопределении tearDownClass(cls) всегда нужно вызывать
         метод super(%имя_текущего_класса_тестов%, cls).tearDownClass()"""
-        super(ViewsTest, cls).tearDownClass()
+        super(TestViews, cls).tearDownClass()
