@@ -1,0 +1,6 @@
+[run]
+include =
+    ./djbook/models/*
+    ./djbook/views.py
+omit =
+    */__init__.py

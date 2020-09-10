@@ -1,11 +1,33 @@
+# Закомментированные строки позволяют запускать тесты из PyCharm, но
+# используются настройки из djbook.settings.py. Т.е. боевая БД и прочее.
+# Нужно морочить rollback, другую БД или in-memory СУБД для тестов.
+# import os
+# import django
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djbook.settings")
+# django.setup()
+
 from django.test import TestCase
 from djbook.views import build_tree
 from djbook.views import build_html_by_tree
 from djbook.views import get_kids
 from unittest import skip
-from .models import Taxonomy
+from djbook.models import Taxonomy
 
 
+# Покрытие кода.
+# https://devguide.python.org/coverage/
+
+# Стереть предыдущую информацию о покрытии.
+# coverage erase
+# Запустить все тесты с покрытием (из корня сайта).
+# coverage run --source='.' --omit='*/migrations/*','*/polls/*' manage.py test
+# Либо можно создать в корне сайта файл .coveragerc и в нём перечислить
+# опции source, include и/или omit и их значения.
+# https://coverage.readthedocs.io/en/coverage-5.2.1/source.html#source
+# Собрать информацию в html-файлы.
+# coverage html
+
+# Запуск из консоли из корня сайта: python manage.py test djbook.tests.ViewsTest
 class ViewsTest(TestCase):
     @classmethod
     def setUpClass(cls):
