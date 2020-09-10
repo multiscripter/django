@@ -5,9 +5,10 @@
 # import django
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djbook.settings")
 # django.setup()
-
+from django.http import HttpRequest
 from django.test import TestCase
-from djbook.views import build_tree
+from django.urls import resolve
+from djbook.views import build_tree, home
 from djbook.views import build_html_by_tree
 from djbook.views import get_kids
 from unittest import skip
@@ -66,6 +67,7 @@ class TestViews(TestCase):
         tree = build_tree(self.tax_set, 1)
         self.assertTrue(len(tree.kids))
 
+    @skip("Don't want to test")
     def test_build_html_by_tree(self):
         """Tests String build_html_by_tree(tree)"""
         tree = build_tree(self.tax_set, 1)
@@ -77,6 +79,24 @@ class TestViews(TestCase):
     def test_get_kids_throws_exception(self):
         """Тестирует Node[] get_kids(tax_set, node)"""
         self.assertRaises(AttributeError, get_kids, [1, 2], None)
+
+    def test_root_url_resolves_to_home_controller(self):
+        """Тестирует отображение URI / на функцию home()"""
+
+        # Найти функцию, на которую отображается указанный URI в urls.py.
+        found = resolve('/')
+        # Убедиться, что найденная функция - это функция home().
+        self.assertEqual(found.func, home)
+
+    def test_home_returns_html(self):
+        """Тестирует, что ответом home() является html-страница."""
+        request = HttpRequest()
+        response = home(request)
+        # Декодировать двоичный код в utf8-строку.
+        html = response.content.decode('utf8')
+        self.assertTrue(html.startswith('<!DOCTYPE html>'))
+        self.assertInHTML('<title>Главная страница</title>', html)
+        self.assertTrue(html.endswith('</html>'))
 
     @classmethod
     def tearDownClass(cls):

@@ -168,21 +168,22 @@ def home(request):
     # Получить все англ. существительные.
     # nouns = Eng.objects.filter(part=1).order_by('word')
 
+    tax_most_tree_html = ''
+    tax_theme_tree_html = ''
+
     tax_set = Taxonomy.objects.all().order_by('eng_word')
     tree = build_tree(tax_set, 15)
-    elem = '<h6 class="mt-3 list-group-head">'
-    elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
-    elem += tree.obj.rus_word + '</h6>\n'
-    tax_most_tree_html = elem
     if tree:
+        elem = '<h6 class="mt-3 list-group-head">'
+        elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
+        elem += tree.obj.rus_word + '</h6>\n'
+        tax_most_tree_html = elem
         tax_most_tree_html += build_html_by_tree(tree)
-
-    tree = build_tree(tax_set, 17)
-    elem = '<h6 class="mt-3 list-group-head">'
-    elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
-    elem += tree.obj.rus_word + '</h6>\n'
-    tax_theme_tree_html = elem
-    if tree:
+        tree = build_tree(tax_set, 17)
+        elem = '<h6 class="mt-3 list-group-head">'
+        elem += '<b>' + tree.obj.eng_word + '</b> &ndash;&nbsp;'
+        elem += tree.obj.rus_word + '</h6>\n'
+        tax_theme_tree_html = elem
         tax_theme_tree_html += build_html_by_tree(tree)
 
     data = {

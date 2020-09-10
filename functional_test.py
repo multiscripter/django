@@ -1,6 +1,9 @@
 from selenium import webdriver
 import unittest
 
+# Запуск.
+# python -m unittest functional_test.py
+
 # Версия webdriver Chrome должна совпадать с версией браузера.
 # https://sites.google.com/a/chromium.org/chromedriver/home
 # browser = webdriver.Chrome('/home/cyberbotx/downloads/chromedriver')
@@ -26,6 +29,5 @@ class VisitorTest(unittest.TestCase):
 
     def test_home_page_title(self):
         """Проверить title страницы."""
-
         self.browser.get('http://django.bot.net/')
         self.assertEqual('Главная страница', self.browser.title)
