@@ -1,50 +1,11 @@
 from django.db import connection
 from django.db.models import Avg, Count
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import logging
-from .forms import TestForm
 from .models import Eng
 from .models import Taxonomy
 
 logger = logging.getLogger(__name__)
-
-
-def forms(request):
-    path = request.get_full_path().split('?')
-    tpl = 'djbook/forms.html'
-    data = {}
-    if request.method == 'POST':
-        meth = request.POST
-        if 'form-id' in request.POST:
-            if request.POST['form-id'] == 'form-1':
-                form = TestForm(request.POST)
-        #     if form.is_valid():
-        #         name = form.cleaned_data['name']
-        #         email_field = form.cleaned_data['email_field']
-        #         email_input = form.cleaned_data['email_input']
-        #         message = form.cleaned_data['message']
-        #         turing = form.cleaned_data['turing']
-        #         return HttpResponseRedirect('/forms/success/')
-            elif request.POST['form-id'] == 'form-2':
-                form = TestForm(request.POST)
-                if form.is_valid():
-                    text = form.cleaned_data['text']
-                    uri = '/forms-response/?status=ok&message=' + text
-                    return HttpResponseRedirect(uri)
-        else:
-            uri = '/forms-response/?status=fail&error=no-form-id'
-            return HttpResponseRedirect(uri)
-
-    elif path[0] == '/forms-response/':
-        tpl = 'djbook/forms-response.html'
-        if request.GET:
-            for k, v in request.GET.items():
-                data[k] = v
-    else:
-        data['form'] = TestForm()
-    data['request'] = request
-    return render(request, tpl, data)
 
 
 def aggregation(request):
