@@ -20,14 +20,21 @@ from djbook.models import Taxonomy
 # Покрытие кода.
 # https://devguide.python.org/coverage/
 
-# Стереть предыдущую информацию о покрытии.
+# Последовательность запуска:
+
+# 1. Стереть предыдущую информацию о покрытии.
 # coverage erase
-# Запустить все тесты с покрытием (из корня сайта).
+
+# 2. Запустить все модульные тесты с покрытием (из корня сайта).
 # coverage run --source='.' --omit='*/migrations/*','*/polls/*' manage.py test
+
 # Либо можно создать в корне сайта файл .coveragerc и в нём перечислить
 # опции source, include и/или omit и их значения.
 # https://coverage.readthedocs.io/en/coverage-5.2.1/source.html#source
-# Собрать информацию в html-файлы.
+# Тогда команда запуска выглядит проще:
+# coverage run manage.py test
+
+# 3. Собрать информацию в html-файлы.
 # coverage html
 
 # Запуск из консоли из корня сайта: python manage.py test djbook.tests.TestViews
@@ -97,6 +104,12 @@ class TestViews(TestCase):
         self.assertTrue(html.startswith('<!DOCTYPE html>'))
         self.assertInHTML('<title>Главная страница</title>', html)
         self.assertTrue(html.endswith('</html>'))
+
+        # Весто явного создания request и вызова home(request) можно
+        # вызвать тестовый клиент Django.
+        response = self.client.get('/')
+        # Проверить, что использован верный шаблон.
+        self.assertTemplateUsed(response, 'djbook/home.html')
 
     @classmethod
     def tearDownClass(cls):

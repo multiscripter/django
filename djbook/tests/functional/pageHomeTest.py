@@ -2,7 +2,12 @@ from selenium import webdriver
 import unittest
 
 # Запуск.
-# python -m unittest functional_test.py
+# Из папки с тестом.
+# python -m unittest pageHomeTest.py
+# Из корневой папки сайта.
+# python -m unittest djbook/tests/functional/pageHomeTest.py
+# Из корневой папки сайта. Все файлы тестов.
+# python -m unittest djbook/tests/functional/*.py
 
 # Версия webdriver Chrome должна совпадать с версией браузера.
 # https://sites.google.com/a/chromium.org/chromedriver/home
@@ -18,8 +23,8 @@ import unittest
 # browser.quit()
 
 
-class VisitorTest(unittest.TestCase):
-    """Тест нового посетителя"""
+class PageHomeTest(unittest.TestCase):
+    """Тест домашней страницы."""
 
     def setUp(self):
         self.browser = webdriver.Chrome('/home/cyberbotx/downloads/chromedriver')
@@ -27,7 +32,12 @@ class VisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.close()
 
-    def test_home_page_title(self):
-        """Проверить title страницы."""
+    def test_home_page(self):
+        """Тестирует главную страницу."""
         self.browser.get('http://django.bot.net/')
+
+        # Сравнить заголовок страницы.
         self.assertEqual('Главная страница', self.browser.title)
+        # Сравнить h1 страницы.
+        actual = self.browser.find_element_by_tag_name('h1').text
+        self.assertEqual('Сайт на Джанге', actual)
