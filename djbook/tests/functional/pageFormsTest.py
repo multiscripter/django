@@ -1,3 +1,4 @@
+from djbook.models import Item
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
@@ -7,7 +8,11 @@ import unittest
 
 # Запуск.
 # Из корневой папки сайта. Все файлы тестов.
+# python manage.py test djbook.tests.functional
+# или
 # python -m unittest djbook/tests/functional/*.py
+# Из корневой папки сайта. Класс тестов PageFormsTest.
+# python manage.py test djbook.tests.functional.pageFormsTest
 
 
 class PageFormsTest(unittest.TestCase):
@@ -48,4 +53,5 @@ class PageFormsTest(unittest.TestCase):
         self.assertEqual('Статус: ok', actual)
 
     def tearDown(self):
+        Item.objects.filter(text='mister John Doe').delete()
         self.browser.close()
