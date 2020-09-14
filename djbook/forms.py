@@ -4,13 +4,13 @@ from django import forms
 class TestForm(forms.Form):
     # name = forms.CharField(label='имя', max_length=100)
     text = forms.CharField(
-        label='Ваше имя',
-        help_text='Введите своё имя тут',
+        label='Ваш текст',
+        help_text='Введите свой текст тут',
         widget=forms.TextInput(attrs={
             'class': 'form-control text-field',
-            'name': 'firstName',
+            'name': 'text',
             'size': 99,
-            'title': 'title ваше имя'
+            'title': 'title ваш текст'
         })
     )
     # email_field = forms.EmailField(label='field Е-почта')

@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from djbook.forms import TestForm
+from djbook.models import Item
 
 
 def get(request):
@@ -14,6 +15,7 @@ def get(request):
                 data[k] = v
     else:
         data['form'] = TestForm()
+        data['items'] = Item.objects.all()
     data['request'] = request
     return render(request, tpl, data)
 
@@ -35,6 +37,7 @@ def post(request):
             form = TestForm(request.POST)
             if form.is_valid():
                 text = form.cleaned_data['text']
+                Item.objects.create(text=text)
                 uri = '/forms-response/?status=ok&message=' + text
                 return HttpResponseRedirect(uri)
             else:

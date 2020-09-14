@@ -12,7 +12,34 @@
 <body class="container page-forms">
     <div class="row mb-4">
         <div class="col-12">
-            <h2>Форма 2</h2>
+            <h2>Элементы Item.</h2>
+            {% if items %}
+            <table id="items-table" class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ид</th>
+                        <th>Текст</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.text }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>Элементов нет.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Форма 2. Добавить элемент.</h2>
             <form action="/forms/" method="post">
                 <input type="hidden" name="form-id" value="form-2">
                 {% csrf_token %}
@@ -22,7 +49,7 @@
                 <div class="form-group">
                     {{ form.text.errors }}
                     <label class="form-label" for="form-2-text">
-                        Ваше имя:
+                        Текст:
                     </label>
                     <input id="form-2-text"
                            name="text"
