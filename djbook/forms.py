@@ -2,6 +2,14 @@ from django import forms
 
 
 class TestForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(TestForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.error_messages = {
+                'required': f'Поле "{field.label}" обязательно.'
+            }
+
     # name = forms.CharField(label='имя', max_length=100)
     text = forms.CharField(
         label='Ваш текст',

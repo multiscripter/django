@@ -9,8 +9,11 @@ import time
 # python manage.py test djbook.tests.functional.testFormsPage
 
 
-class PageFormsTest(LiveServerTestCase):
+class PageFormsTestLive(LiveServerTestCase):
     """Тест страницы форм с использование LiveServer"""
+
+    MAX_WAIT = 5
+    MAX_WAIT_MSG = f'Страница не загрузилась за {MAX_WAIT} секунд'
 
     def setUp(self):
         self.browser = webdriver.Chrome('/home/cyberbotx/downloads/chromedriver')
@@ -25,6 +28,7 @@ class PageFormsTest(LiveServerTestCase):
         # Получить свойство html-элемента.
         # text_field.get_property('prop_name')
 
+        # Создать 2 элемента Item.
         for num in range(1, 3):
             text_field = self.browser.find_element_by_id('form-2-text')
             # Ввести текст в поле ввода.
@@ -33,13 +37,12 @@ class PageFormsTest(LiveServerTestCase):
             text_field.send_keys(Keys.ENTER)
 
             # Ожидать 5 секунд ответа сервера и редиректа на другую страницу.
-            for a in range(0, 5):
-                # Заснуть на секунду.
-                time.sleep(1)
+            end_time = time.time() + PageFormsTestLive.MAX_WAIT
+            while time.time() < end_time:
                 if self.url != self.browser.current_url:
                     break
             else:
-                raise Exception('Страница не загрузилась за 5 секунд')
+                raise Exception(PageFormsTestLive.MAX_WAIT_MSG)
 
             # http://django.bot.net/forms-response/?status=ok&message=mister%20John%20Doe
             # Проверить, что целевой URI содержится в URL.
@@ -50,12 +53,18 @@ class PageFormsTest(LiveServerTestCase):
             go_back = self.browser.find_element_by_id('go-back')
             go_back.click()
 
-        time.sleep(2)
-        # https://selenium-python.readthedocs.io/locating-elements.html
-        rows = self.browser.find_elements_by_css_selector('#items-table tbody tr')
-        self.assertTrue(
-            any('Папа Бенедикт 2' in row.text for row in rows)
-        )
+        end_time = time.time() + PageFormsTestLive.MAX_WAIT
+        while time.time() < end_time:
+            # https://selenium-python.readthedocs.io/locating-elements.html
+            rows = self.browser.find_elements_by_css_selector('#items-table tbody tr')
+            if not rows:
+                continue
+            self.assertTrue(
+                any('Папа Бенедикт 2' in row.text for row in rows)
+            )
+            break
+        else:
+            raise Exception(PageFormsTestLive.MAX_WAIT_MSG)
 
     def tearDown(self):
         self.browser.close()
